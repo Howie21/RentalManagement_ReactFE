@@ -5,6 +5,7 @@ import axios from 'axios';
 
 //Imports from component files
 import NavBar from "./components/NavBar/NavBar"
+import LandingPage from './components/LandingPage/LandingPage';
 
 class App extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class App extends Component {
      }
   }
 
+  //Every time a Refresh/ReRender is triggered do this:
   componentDidMount() {
     const jwt = localStorage.getItem('token');
     try {
@@ -27,6 +29,7 @@ class App extends Component {
     }
   }
 
+  //If a token is in storage, auto login user
   async getUser(token) {
     let user = await axios({
       method: 'GET',
@@ -45,12 +48,16 @@ class App extends Component {
     });
   };
 
+
+  //All Routes are stored for the entire application here
+  //using react-router-dom Route and Routes
+  // Using ELEMENT instead of COMPONENT due to React Update
   render() { 
     return ( 
       <div className="App">
         <NavBar bg='light' expand='lg' user={this.state.user} landLordStatus={this.state.isLandLord} logout={this.logout}/>
         <Routes>
-          <Route path='/' exact element={  } /> {/* Create Landing Page! */}
+          <Route path='/' exact element={ <LandingPage /> } />
         </Routes>
       </div>
      );
