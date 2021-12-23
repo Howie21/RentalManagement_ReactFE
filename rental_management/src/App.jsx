@@ -49,6 +49,9 @@ class App extends Component {
     return ( 
       <div className="App">
         <NavBar bg='light' expand='lg' user={this.state.user} landLordStatus={this.state.isLandLord} logout={this.logout}/>
+        <Routes>
+          <Route path='/' exact element={  } /> {/* Create Landing Page! */}
+        </Routes>
       </div>
      );
   }

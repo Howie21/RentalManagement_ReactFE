@@ -21,7 +21,7 @@ function NavBar({user, landLordStatus, logout}) {
                             Home
                         </Nav.link>
                         \
-                        {user && landLordStatus == false && (
+                        {user && landLordStatus === false && (
                             <>
                                 <Nav.Link as={Link} to="/TPropertyManagement">
                                     Property Management
@@ -31,7 +31,7 @@ function NavBar({user, landLordStatus, logout}) {
                                 </Nav.Link>
                             </>
                         )}
-                        {user && landLordStatus == true && (
+                        {user && landLordStatus === true && (
                             <>
                                 <Nav.Link as={Link} to="/LLPropertyManagement">
                                     Property Management
@@ -80,4 +80,4 @@ function NavBar({user, landLordStatus, logout}) {
      );
 }
 
-export default NavBar;{user, logout}
+export default NavBar;
