@@ -17,14 +17,14 @@ class T_PaymentHistory extends Component {
         this.getPaymentHistory();
     }
 
-    //Axios call to DB for Payment History
+    //Axios call to BE for Payment History
     //Add Authorization on Backend !!!!!!!!
     getPaymentHistory = async () => {
         authToken = localStorage.getItem("token");
         try {
            await axios({
             method:"GET",
-            url: "",
+            url: "", // URL for Payment GET all -- Backend will manage auth and org.
             headers: { Authorization: `Bearer ${authToken}` },
             }).then(res => {
                 this.setState({
@@ -38,11 +38,27 @@ class T_PaymentHistory extends Component {
         
     }
 
-
+     // Console Log result of Payment History to check what to put into Table Data
     render() { 
+        let paymentHistory = this.state.paymentHistory
         return ( 
-            <div>
-
+            <div> 
+                {/* <table id='paymentHistory' className='paymentTable'> 
+                    <tr className='cartTableHeader'>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                    {paymentHistory.map(sc => {
+                        return (
+                        <tr className='cartItem'>
+                            <td>{sc.videoGame.title}</td>
+                            <td>{sc.videoGame.price}</td>
+                            <td>{sc.quantity}</td>
+                        </tr>
+                        );
+                    })}
+                </table> */}
             </div>
          );
     }
