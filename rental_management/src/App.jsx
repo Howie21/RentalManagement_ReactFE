@@ -27,7 +27,7 @@ class App extends Component {
       this.getUser(jwt);
     } 
     catch {
-      console.log('Something went wrong // line 26 of App');
+      console.log('Something went wrong // App Mount');
     }
   }
 
@@ -61,7 +61,7 @@ class App extends Component {
         <Routes>
           <Route path='/' exact element={ <LandingPage /> } />
           <Route path="/login" element={ <Login /> } />
-          <Route path="/TPayment" />
+          <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} /> } />
         </Routes>
       </div>
      );
