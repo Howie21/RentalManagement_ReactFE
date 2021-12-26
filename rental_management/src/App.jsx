@@ -6,6 +6,8 @@ import axios from 'axios';
 //Imports from component files
 import NavBar from "./components/NavBar/NavBar"
 import LandingPage from './components/LandingPage/LandingPage';
+import Login from './components/Login/Login';
+import T_PaymentHistory from './components/T_PaymentHistory/T_PaymentHistory';
 
 class App extends Component {
   constructor(props) {
@@ -58,6 +60,8 @@ class App extends Component {
         <NavBar bg='light' expand='lg' user={this.state.user} landLordStatus={this.state.isLandLord} logout={this.logout}/>
         <Routes>
           <Route path='/' exact element={ <LandingPage /> } />
+          <Route path="/login" element={ <Login /> } />
+          <Route path="/TPayment" />
         </Routes>
       </div>
      );
