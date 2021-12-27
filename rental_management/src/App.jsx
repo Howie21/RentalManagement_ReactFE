@@ -8,6 +8,7 @@ import NavBar from "./components/NavBar/NavBar"
 import LandingPage from './components/LandingPage/LandingPage';
 import Login from './components/Login/Login';
 import T_PaymentHistory from './components/T_PaymentHistory/T_PaymentHistory';
+import T_PropertyManagement from './components/T_PropertyManagement/T_PropertyManagement';
 
 class App extends Component {
   constructor(props) {
@@ -25,6 +26,7 @@ class App extends Component {
     const jwt = localStorage.getItem('token');
     try {
       this.getUser(jwt);
+      this.getProperty(jwt);
     } 
     catch {
       console.log('Something went wrong // App Mount');
@@ -41,6 +43,17 @@ class App extends Component {
     this.setState({
       user: user.data,
     });
+  }
+
+  async getProperty(token) {
+    let property = await axios({
+      method: "GET",
+      url: "",
+      headers: {Authorization: `Bearer ${token}`} //Property URL per controller on backend
+    })
+    this.setState({
+      property: property.data
+    })
   }
 
   logout = () => {
@@ -62,6 +75,7 @@ class App extends Component {
           <Route path='/' exact element={ <LandingPage /> } />
           <Route path="/login" element={ <Login /> } />
           <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} /> } />
+          <Route path="/TPropertyManagement" element={ <T_PropertyManagement userObject={this.state.user} property={this.state.property} /> } />
         </Routes>
       </div>
      );
