@@ -70,6 +70,7 @@ class App extends Component {
   render() { 
     return ( 
       <div className="App">
+        <h1>TEST</h1>
         <NavBar bg='light' expand='lg' user={this.state.user} landLordStatus={this.state.isLandLord} logout={this.logout}/>
         <Routes>
           <Route path='/' exact element={ <LandingPage /> } />

@@ -20,7 +20,7 @@ class T_PaymentHistory extends Component {
     //Axios call to BE for Payment History
     //Add Authorization on Backend !!!!!!!!
     getPaymentHistory = async () => {
-        authToken = localStorage.getItem("token");
+        let authToken = localStorage.getItem("token");
         try {
            await axios({
             method:"GET",
@@ -49,12 +49,12 @@ class T_PaymentHistory extends Component {
                         <th>Price</th>
                         <th>Quantity</th>
                     </tr>
-                    {paymentHistory.map(sc => {
+                    {paymentHistory.map(pm => {
                         return (
                         <tr className='cartItem'>
-                            <td>{sc.videoGame.title}</td>
-                            <td>{sc.videoGame.price}</td>
-                            <td>{sc.quantity}</td>
+                            <td>{pm.}</td>
+                            <td>{pm.}</td>
+                            <td>{pm.}</td>
                         </tr>
                         );
                     })}
