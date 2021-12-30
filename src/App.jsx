@@ -1,6 +1,6 @@
 //Imports from dependencies
 import React, { Component } from 'react';
-import {Route, Routes} from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import axios from 'axios';
 
 //Imports from component files
@@ -9,14 +9,15 @@ import LandingPage from './components/LandingPage/LandingPage';
 import Login from './components/Login/Login';
 import T_PaymentHistory from './components/T_PaymentHistory/T_PaymentHistory';
 import T_PropertyManagement from './components/T_PropertyManagement/T_PropertyManagement';
-
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = { 
       user: '',
+      userId: "",
       isLandLord: false,
       property: '',
+      payments: ""
 
      }
   }
@@ -26,7 +27,13 @@ class App extends Component {
     const jwt = localStorage.getItem('token');
     try {
       this.getUser(jwt);
-      this.getProperty(jwt);
+      if (this.state.isLandLord === false) {
+        this.getTenantInfo(this.state.userId);
+        this.getTenantPayments(this.state.userId);
+        } else {
+        this.getLandlordPayments();
+        }
+      
     } 
     catch {
       console.log('Something went wrong // App Mount');
@@ -34,26 +41,63 @@ class App extends Component {
   }
 
   //If a token is in storage, auto login user
-  async getUser(token) {
+   async getUser(token) {
     let user = await axios({
       method: 'GET',
       url: 'https://localhost:44394/api/examples/user',
       headers: { Authorization: `Bearer ${token}` },
+    }).then(res => {
+        this.setState({
+        user: res.data,
+        userId: res.data.id
+      });
+      this.decideLandLordStatus(res.data.id)
     });
-    this.setState({
-      user: user.data,
+    
+  }
+
+  decideLandLordStatus(userId) {
+    const Landlords = []
+    Landlords.forEach(element => {
+      if (element === userId) {
+        this.setState({
+          isLandLord: true
+        })
+      }
     });
   }
 
-  async getProperty(token) {
-    let property = await axios({
+
+  async getTenantInfo(userId) {
+    let info = await axios({
       method: "GET",
-      url: "",
-      headers: {Authorization: `Bearer ${token}`} //Property URL per controller on backend
-    })
+      url: `https://localhost:44394/api/tenantsinfo/${userId}`
+    });
     this.setState({
-      property: property.data
+      property: info.data[0].property
     })
+  }
+
+  async getTenantPayments(userId) {
+    await axios({
+      method: "GET",
+      url: `https://localhost:44394/api/payments/${userId}`
+    }).then(res => {
+      this.setState({
+        payments: res.data
+      })
+    })
+  }
+
+  async getLandlordPayments() {
+    await axios({
+      method: "GET",
+      url: "https://localhost:44394/api/payments"
+    }).then(res => {
+      this.setState({
+        payments: res.data
+      });
+    });
   }
 
   logout = () => {
@@ -69,16 +113,19 @@ class App extends Component {
   // Using ELEMENT instead of COMPONENT due to React Update
   render() { 
     return ( 
+   
       <div className="App">
-        <h1>TEST</h1>
+        <h1>test</h1>
         <NavBar bg='light' expand='lg' user={this.state.user} landLordStatus={this.state.isLandLord} logout={this.logout}/>
         <Routes>
+         
           <Route path='/' exact element={ <LandingPage /> } />
           <Route path="/login" element={ <Login /> } />
-          <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} /> } />
+          <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} payments={ this.state.payments } /> } />
           <Route path="/TPropertyManagement" element={ <T_PropertyManagement userObject={this.state.user} property={this.state.property} /> } />
-        </Routes>
+        </Routes> 
       </div>
+
      );
   }
 }
