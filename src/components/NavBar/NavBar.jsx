@@ -17,23 +17,23 @@ function NavBar({user, landLordStatus, logout}) {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id='responsive-navbar-nav' >
                     <Nav>
-                        <Nav.link as={Link} to="/">
+                        <Nav.Link as={Link} to="/">
                             Home
-                        </Nav.link>
-                        \
-                        {user && landLordStatus === false && (
+                        </Nav.Link>
+                        
+                        {user && (
                             <>
-                                <Nav.Link as={Link} to="/TPropertyManagement">
+                                {/* <Nav.Link as={Link} to="/TPropertyManagement">
                                     Property Management
                                 </Nav.Link>
                                 <Nav.Link as={Link} to="/TPayment">
                                     Payment
-                                </Nav.Link>
+                                </Nav.Link> */}
                             </>
                         )}
-                        {user && landLordStatus === true && (
+                        {landLordStatus &&  (
                             <>
-                                <Nav.Link as={Link} to="/LLPropertyManagement">
+                                {/* <Nav.Link as={Link} to="/LLPropertyManagement">
                                     Property Management
                                 </Nav.Link>
                                 <Nav.Link as={Link} to="/TenantManagement">
@@ -41,7 +41,7 @@ function NavBar({user, landLordStatus, logout}) {
                                 </Nav.Link>
                                 <Nav.Link as={Link} to="/LLPaymentManagement">
                                     Payment Management
-                                </Nav.Link>
+                                </Nav.Link> */}
                             </>
                         )}
                     </Nav>
@@ -49,9 +49,9 @@ function NavBar({user, landLordStatus, logout}) {
                         {user && (
                             <>
                                 <NavDropdown title="Account" id="navbarScrollingDropdown">
-                                    <NavDropdown.Item as={Link} to="/Account">
+                                    {/* <NavDropdown.Item as={Link} to="/Account">
                                         Manage Account
-                                    </NavDropdown.Item>
+                                    </NavDropdown.Item> */}
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item as={Link} to="/" onClick={() => logout()}>
                                         Logout
@@ -61,7 +61,7 @@ function NavBar({user, landLordStatus, logout}) {
                         )}
                         {!user && (
                             <>
-                                <Nav.Link as={Link} onClick={() => setShowModel(true)}>Login</Nav.Link>
+                                <Nav.Link  onClick={() => setShowModel(true)}>Login</Nav.Link>
                                 
                             </>
                         )}
