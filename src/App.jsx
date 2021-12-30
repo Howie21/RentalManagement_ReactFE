@@ -9,6 +9,8 @@ import LandingPage from './components/LandingPage/LandingPage';
 import Login from './components/Login/Login';
 import T_PaymentHistory from './components/T_PaymentHistory/T_PaymentHistory';
 import T_PropertyManagement from './components/T_PropertyManagement/T_PropertyManagement';
+import MakePayment from './components/MakePayment/MakePayment';
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -123,6 +125,7 @@ class App extends Component {
           <Route path="/login" element={ <Login /> } />
           <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} payments={ this.state.payments } /> } />
           <Route path="/TPropertyManagement" element={ <T_PropertyManagement userObject={this.state.user} property={this.state.property} /> } />
+          <Route path="/MakePayment" element={ <MakePayment userObject={this.state.user} /> } />
         </Routes> 
       </div>
 
