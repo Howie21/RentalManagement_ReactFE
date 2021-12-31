@@ -19,8 +19,8 @@ class App extends Component {
       userId: "",
       isLandLord: false,
       property: '',
-      payments: ""
-
+      payments: "",
+      tenantInfo: ""
      }
   }
 
@@ -76,7 +76,8 @@ class App extends Component {
       url: `https://localhost:44394/api/tenantsinfo/${userId}`
     });
     this.setState({
-      property: info.data[0].property
+      property: info.data[0].property,
+      tenantInfo: info.data[0]
     })
   }
 
@@ -125,7 +126,7 @@ class App extends Component {
           <Route path="/login" element={ <Login /> } />
           <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} payments={ this.state.payments } /> } />
           <Route path="/TPropertyManagement" element={ <T_PropertyManagement userObject={this.state.user} property={this.state.property} /> } />
-          <Route path="/MakePayment" element={ <MakePayment userObject={this.state.user} /> } />
+          <Route path="/MakePayment" element={ <MakePayment user={this.state.user} property={this.state.property} tenantInfo={this.state.tenantInfo}  /> } />
         </Routes> 
       </div>
 
