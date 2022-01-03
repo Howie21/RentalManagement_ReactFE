@@ -58,15 +58,93 @@ class CreateTenant extends Component {
         });
       };
 
-    //TenantInfo POST
-
+     //USER POST
+    handleNewUser = async() => {
+        await axios({
+            method: "POST",
+            url: "https://localhost:44394/api/authentication",
+            data: {
+                "firstname": this.state.userFirstName,
+                "lastname": this.state.userLastName,
+                "username": this.state.userUserName,
+                "password": this.state.userPassword,
+                "email": this.state.userEmail,
+                "phonenumber": this.state.userPhoneNumber
+            }
+        }).then(response => {
+            console.log(response.data);
+        });
+    }
+    //ADDRESS POST 
+    
+    handleNewAddress = async() => {
+        await axios({
+            method: "POST",
+            url: "https://localhost:44394/api/address",
+            data: {
+                "BuildingNumber": this.state.addressBuildingNumber,
+                "Street": this.state.addressStreet,
+                "City": this.state.addressCity,
+                "State": this.state.addressState,
+                "ZipCode": this.state.addressZipCode  
+            }
+        }).then(response => {
+            console.log(response.data);
+        });
+    }
+    
     //LEASE POST
+    handleNewLease = async() => {
+        await axios({
+            method: "POST",
+            url: "https://localhost:44394/api/leases",
+            data: {
+                "LeaseNumber": this.state.leaseLeaseNumber,
+                "StartDate": this.state.leaseStartDate,
+                "EndDate": this.state.leaseEndDate,
+                "SafetyDeposit": `$${this.state.leaseSafetyDeposit}`
+            }
+        }).then(response => {
+            console.log(response.data);
+        });
+    }
 
     //PROPERTY POST
+    handleNewProperty = async() => {
+        await axios({
+            method: "POST",
+            url: "https://localhost:44394/api/properties",
+            data: {
+                "AddressId": this.state.propertyAddressId,
+                "Bathrooms": this.state.propertyBathrooms,
+                "Bedrooms": this.state.propertyBedrooms,
+                "SquareFeet": this.state.propertySquareFeet
+            }
+        }).then(res => {
+            console.log(res.data)
+        });
+    }
 
-    //USER POST
+    //TenantInfo POST
 
-    //ADDRESS POST
+    handleNewTenant = async() => {
+        await axios({
+            method: "POST",
+            url: "https://localhost:44394/api/tenantsinfo",
+            data: {
+                "TenantId": this.state.tenantId,
+                "RentDueDate": this.state.tenantRentDueDate,
+                "RentAmount": `$${this.state.tenantRentAmount}`,
+                "LicenseNumber": this.state.tenantLicenseNumber,
+                "Age": parseInt(this.state.tenantAge),
+                "PropertyId": parseInt(this.state.tenantPropertyId),
+                "LeaseId": parseInt(this.state.tenantLeaseId)
+            }
+        }).then(res => {
+            console.log(res.data);
+        });
+    }
+
 
 
     render() { 
@@ -84,7 +162,7 @@ class CreateTenant extends Component {
                 <div className="userForm">
                     <Container>
                         <h5>New User:</h5>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleNewUser}>
                             <Form.Label>First Name: </Form.Label>
                             <Form.Control name="userFirstName" value={this.state.userFirstName} onChange={this.handleChange} ></Form.Control>
                             <Form.Label>Last Name: </Form.Label>
@@ -104,7 +182,7 @@ class CreateTenant extends Component {
                 <div className="addressForm">
                     <Container>
                         <h5>New Address Item:</h5>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleNewAddress}>
                             <Form.Label>Building Number:</Form.Label>
                             <Form.Control name="addressBuildingNumber"value={this.state.addressBuildingNumber} onChange={this.handleChange}></Form.Control>
                             <Form.Label>Street:</Form.Label>
@@ -121,7 +199,7 @@ class CreateTenant extends Component {
                 </div>
                 <div className="leaseForm">
                     <Container>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleNewLease}>
                             <Form.Label>Lease Number:</Form.Label>
                             <Form.Control name="leaseLeaseNumber" value={this.state.leaseLeaseNumber} onChange={this.handleChange} ></Form.Control>
                             <Form.Label>Start Date:</Form.Label>
@@ -136,7 +214,7 @@ class CreateTenant extends Component {
                 </div>
                 <div className="propertyForm">
                     <Container>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleNewProperty}>
                             <Form.Label>Address Item Id:  </Form.Label>
                             {this.state.address === "" && (
                                 <p>No previous Address Item Created</p>
