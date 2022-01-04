@@ -23,35 +23,35 @@ function NavBar({user, landLordStatus, logout}) {
                         
                         {user && (
                             <>
-                                {/* <Nav.Link as={Link} to="/TPropertyManagement">
+                                <Nav.Link as={Link} to="/TPropertyManagement">
                                     Property Management
                                 </Nav.Link>
                                 <Nav.Link as={Link} to="/TPayment">
                                     Payment
-                                </Nav.Link> */}
+                                </Nav.Link>
                             </>
                         )}
                         {landLordStatus &&  (
                             <>
                                 {/* <Nav.Link as={Link} to="/LLPropertyManagement">
                                     Property Management
-                                </Nav.Link>
-                                <Nav.Link as={Link} to="/TenantManagement">
+                                </Nav.Link> */}
+                                <Nav.Link as={Link} to="/Management">
                                     Tenant Management
                                 </Nav.Link>
-                                <Nav.Link as={Link} to="/LLPaymentManagement">
+                                {/* <Nav.Link as={Link} to="/LLPaymentManagement">
                                     Payment Management
                                 </Nav.Link> */}
                             </>
                         )}
                     </Nav>
                     <Nav>
-                        {/* {user && (
+                        {user && (
                             <>
                                 <NavDropdown title="Account" id="navbarScrollingDropdown">
-                                    <NavDropdown.Item as={Link} to="/Account">
+                                    {/* <NavDropdown.Item as={Link} to="/Account">
                                         Manage Account
-                                    </NavDropdown.Item>
+                                    </NavDropdown.Item> */}
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item as={Link} to="/" onClick={() => logout()}>
                                         Logout
@@ -64,7 +64,7 @@ function NavBar({user, landLordStatus, logout}) {
                                 <Nav.Link  onClick={() => setShowModel(true)}>Login</Nav.Link>
                                 
                             </>
-                        )} */}
+                        )}
                     </Nav>
                     <Modal show={showModel} onHide={() => setShowModel(false)} >
                         <Modal.Header closeButton>

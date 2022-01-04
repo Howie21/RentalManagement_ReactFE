@@ -150,13 +150,13 @@ class CreateTenant extends Component {
     render() { 
         return ( 
             <div>
-                <h3>Management Home!</h3>
-                <p>
+                <h3 className="text-center">Management Home</h3>
+                <p className="text-center">
                     For your Convience, this page has been structured to provide the correct order of Operations 
                     when making a new tenant account. 
                     <br/>
                     If entering completly new information for the first time for all the require documents: 
-                    <br/>User Account, Address Info, Property Info, Lease Info, TenantInfo<br/>
+                    <br/>User Account, Address Info, Property Info, Lease Info, TenantInfo<br/><br/>
                     You will find in the forms, suggestions for completion of the forms.
                 </p>
                 <div className="userForm">
@@ -178,6 +178,7 @@ class CreateTenant extends Component {
                             <Button type="submit" className='mt-3'>Register Tenant</Button>
                         </Form>
                     </Container>
+                    <br/>
                 </div>
                 <div className="addressForm">
                     <Container>
@@ -196,9 +197,11 @@ class CreateTenant extends Component {
                             <Button type="submit" className='mt-3'>Submit Address</Button>
                         </Form>
                     </Container>
+                    <br/>
                 </div>
                 <div className="leaseForm">
                     <Container>
+                        <h5>New Lease:</h5>
                         <Form onSubmit={this.handleNewLease}>
                             <Form.Label>Lease Number:</Form.Label>
                             <Form.Control name="leaseLeaseNumber" value={this.state.leaseLeaseNumber} onChange={this.handleChange} ></Form.Control>
@@ -211,16 +214,18 @@ class CreateTenant extends Component {
                             <Button type="submit" className='mt-3'>Submit Lease</Button>
                         </Form>
                     </Container>
+                    <br/>
                 </div>
                 <div className="propertyForm">
                     <Container>
+                    <h5>New Property:</h5>
                         <Form onSubmit={this.handleNewProperty}>
                             <Form.Label>Address Item Id:  </Form.Label>
-                            {this.state.address === "" && (
+                            {!this.state.address && (
                                 <p>No previous Address Item Created</p>
                             )
                             }
-                            {!this.state.address !== "" && (
+                            {this.state.address && (
                                 <p>Previously Created Address Item Id: {this.state.address.Id}</p>
                             )
                             }
@@ -234,16 +239,18 @@ class CreateTenant extends Component {
                             <Button type="submit" className='mt-3'>Submit Property</Button>
                         </Form>
                     </Container>
+                    <br/>
                 </div>
                 <div className="tenantForm">
                     <Container>
+                    <h5>New Tenant Form:</h5>
                         <Form onSubmit={this.handleSubmit}>
                             <Form.Label>Tenant Id: </Form.Label>
-                            {this.state.user === "" && (
+                            {!this.state.user && (
                                 <p>No previous User Account Created</p>
                             )
                             }
-                            {!this.state.user !== "" && (
+                            {this.state.user && (
                                 <p>Previously Created Address Item Id: {this.state.user.Id}</p>
                             )
                             }
@@ -258,21 +265,21 @@ class CreateTenant extends Component {
                             <Form.Label>Primary Tenant Age:</Form.Label>
                             <Form.Control name="tenantAge" value={this.state.tenantAge} onChange={this.handleChange} ></Form.Control>
                             <Form.Label>Tenant Property Id: </Form.Label>
-                            {this.state.propertyInfo === "" && (
+                            {!this.state.propertyInfo && (
                                 <p>No previous Property Created</p>
                             )
                             }
-                            {!this.state.propertyInfo !== "" && (
+                            {this.state.propertyInfo && (
                                 <p>Previously Property Id: {this.state.propertyInfo.Id}</p>
                             )
                             }
                             <Form.Control name="tenantPropertyId" value={this.state.tenantPropertyId} onChange={this.handleChange} ></Form.Control>
                             <Form.Label>Tenant Lease Id:</Form.Label>
-                            {this.state.lease === "" && (
+                            {!this.state.lease && (
                                 <p>No previous Lease Created</p>
                             )
                             }
-                            {!this.state.lease !== "" && (
+                            {this.state.lease && (
                                 <p>Previously Created Lease Id: {this.state.lease.Id}</p>
                             )
                             }
@@ -280,6 +287,7 @@ class CreateTenant extends Component {
                             <Button type="submit" className='mt-3'>Submit Tenant</Button>
                         </Form>
                     </Container>
+                    <br/>
                 </div>
             </div>
          );

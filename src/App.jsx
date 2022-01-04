@@ -60,7 +60,9 @@ class App extends Component {
   }
 
   decideLandLordStatus(userId) {
-    const Landlords = []
+    const Landlords = [
+      "12bb432c-14af-4a4b-9b8e-f0c215d646ef"
+    ]
     Landlords.forEach(element => {
       if (element === userId) {
         this.setState({
@@ -123,7 +125,6 @@ class App extends Component {
     return ( 
    
       <div className="App">
-        <h1>test</h1>
         <NavBar bg='light' expand='lg' user={this.state.user} landLordStatus={this.state.isLandLord} logout={this.logout}/>
         <Routes>
          
