@@ -45,7 +45,7 @@ class App extends Component {
 
   //If a token is in storage, auto login user
    async getUser(token) {
-    let user = await axios({
+    await axios({
       method: 'GET',
       url: 'https://localhost:44394/api/examples/user',
       headers: { Authorization: `Bearer ${token}` },
@@ -132,6 +132,7 @@ class App extends Component {
           <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} payments={ this.state.payments } /> } />
           <Route path="/TPropertyManagement" element={ <T_PropertyManagement userObject={this.state.user} property={this.state.property} /> } />
           <Route path="/MakePayment" element={ <CheckoutForm price={this.state.tenantInfo.RentAmount} onSuccessfulCheckout={this.onSuccessfulCheckout} /> } />
+          <Route path="/Management" element={ <CreateTenant isLandlord={this.state.isLandLord} /> } />
         </Routes> 
       </div>
 

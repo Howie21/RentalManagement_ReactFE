@@ -46,12 +46,12 @@ function NavBar({user, landLordStatus, logout}) {
                         )}
                     </Nav>
                     <Nav>
-                        {user && (
+                        {/* {user && (
                             <>
                                 <NavDropdown title="Account" id="navbarScrollingDropdown">
-                                    {/* <NavDropdown.Item as={Link} to="/Account">
+                                    <NavDropdown.Item as={Link} to="/Account">
                                         Manage Account
-                                    </NavDropdown.Item> */}
+                                    </NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item as={Link} to="/" onClick={() => logout()}>
                                         Logout
@@ -64,7 +64,7 @@ function NavBar({user, landLordStatus, logout}) {
                                 <Nav.Link  onClick={() => setShowModel(true)}>Login</Nav.Link>
                                 
                             </>
-                        )}
+                        )} */}
                     </Nav>
                     <Modal show={showModel} onHide={() => setShowModel(false)} >
                         <Modal.Header closeButton>

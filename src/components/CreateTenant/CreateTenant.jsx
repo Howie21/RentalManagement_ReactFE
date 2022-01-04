@@ -280,13 +280,6 @@ class CreateTenant extends Component {
                             <Button type="submit" className='mt-3'>Submit Tenant</Button>
                         </Form>
                     </Container>
-                    {/* tenantId: "",
-                        tenantRentDueDate: "",
-                        tenantRentAmount: "$",
-                        tenantLicenseNumber: "",
-                        tenantAge: "",
-                        tenantPropertyId: "",
-                        tenantLeaseId: "" */}
                 </div>
             </div>
          );
