@@ -6,7 +6,7 @@ function LandingPage() {
     return ( 
         <div>
             <div className="row title-bar">
-                <h1>Welcome to Howard Rental's!</h1>
+                <h1>Welcome to Rental Management!</h1>
             </div>
             <div className="row">
                 <div className="col-lg-6 col-md-3 col-sm-2 row testDiv1">
@@ -20,7 +20,7 @@ function LandingPage() {
                     <p className=" text-center">Reach out to your landlord to create your account!</p>
                 </div>
                 <div className="col-lg-6 col-md-3 col-sm-2 row text-center testDiv3">
-                    <p className=" text-center">Testing 3</p>
+                    <p className=" text-center"></p>
                 </div>
             </div>
         </div>
