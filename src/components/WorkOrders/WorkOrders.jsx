@@ -6,33 +6,30 @@ class WorkOrders extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            userId: this.props.UserId,
-            workorders: "",
-            landLordStatus: this.props.landLordStatus,
-            currentWorkorders:"",
-            historyWorkOrders:"",
+            currentWorkorders:[],
+            historyWorkOrders:[],
 
             //Form states
-            requestorId: "",
-            propertyId: "",
-            workOrderField: "",
-            forLandlordBool: true,
+            RequestorId: this.props.UserId,
+            OrderChar: "",
+            forLandLord: true,
+            propertyId: this.props.property.id,
+            activeStatus: "Pending"
          }
     }
 
     componentDidMount() {
-        this.getAllWorkOrders;
     };
 
-    sortWorkOrders = () => {
-        this.state.workorders.forEach(element => {
-            if(element.activeStatus === "Pending" || element.activeStatus === "Approved") {
-                this.state.currentWorkorders.push(element);
-            } else {
-                this.state.historyWorkOrders.push(element)
-            }
-        });
-    }
+    // sortWorkOrders = (arr) => {
+    //     arr.forEach(element => {
+    //         if(element.activeStatus === "Pending" || element.activeStatus === "Approved") {
+    //             this.state.currentWorkorders.push(element);
+    //         } else {
+    //             this.state.historyWorkOrders.push(element)
+    //         }
+    //     });
+    // }
 
     handleChange = event => {
         event.preventDefault();
@@ -41,50 +38,40 @@ class WorkOrders extends Component {
         });
       };
 
-    getAllWorkOrders = async() => {
-        await axios({
-            method:"GET",
-            url: "https://localhost:44394/api/workorders",
+    
 
-        }).then(res => {
-            this.setState({
-                workorders: res.data
-            });
-        }).then(this.sortWorkOrders)
-    }
-
-    postNewWorkOrder = async() => {
+    handleSubmit = async event => {
+        event.preventDefault();
         await axios({
             method: "POST",
-            url: "",
+            url: "https://localhost:44394/api/workorders",
             data: {
-                requestorId: this.state.requestorId,
-                propertyId: parseInt(this.state.propertyId),
-                workOrder: this.state.workOrderField,
-                forLandLord: this.state.forLandlordBool,
-                activeStatus: "Pending"
+                "RequestorId": this.props.UserId,
+                "OrderChar": this.state.OrderChar,
+                "forLandLord": Boolean(this.state.forLandlordBool),
+                "PropertyId": parseInt(this.props.property.id),
+                "ActiveStatus": this.state.activeStatus
             }
         }).then(res => {
-            console.alert("Work Order confirmed.");
-            this.setState({
-                workOrderField: "",
-            })
+            alert("New Work Order submitted!");
         });
     }
 
     approveWorkOrder = async(wo) => {
-        await axios({
+        console.log(wo)
+        let call = await axios({
             method: "PUT",
             url: "https://localhost:44394/api/workorders",
             data: {
                 "orderId": parseInt(wo.orderId),
-                "RequestorId": wo.RequestorId,
-                "OrderChar": wo.OrderChar,
-                "forLandlord": wo.forLandLord,
-                "PropertyId": parseInt(wo.PropertyId),
+                "RequestorId": wo.requestorId,
+                "OrderChar": wo.orderChar,
+                "forLandlord": wo.forLandlord,
+                "PropertyId": parseInt(wo.propertyId),
                 "activeStatus": "Approved"
             }
         })
+        console.log(call);
     }
 
     denyWorkOrder = async(wo) => {
@@ -93,10 +80,10 @@ class WorkOrders extends Component {
             url: "https://localhost:44394/api/workorders",
             data: {
                 "orderId": parseInt(wo.orderId),
-                "RequestorId": wo.RequestorId,
-                "OrderChar": wo.OrderChar,
-                "forLandlord": wo.forLandLord,
-                "PropertyId": parseInt(wo.PropertyId),
+                "RequestorId": wo.requestorId,
+                "OrderChar": wo.orderChar,
+                "forLandlord": wo.forLandlord,
+                "PropertyId": parseInt(wo.propertyId),
                 "activeStatus": "Denied"
             }
         })
@@ -108,51 +95,57 @@ class WorkOrders extends Component {
             url: "https://localhost:44394/api/workorders",
             data: {
                 "orderId": parseInt(wo.orderId),
-                "RequestorId": wo.RequestorId,
-                "OrderChar": wo.OrderChar,
-                "forLandlord": wo.forLandLord,
-                "PropertyId": parseInt(wo.PropertyId),
+                "RequestorId": wo.requestorId,
+                "OrderChar": wo.orderChar,
+                "forLandlord": wo.forLandlord,
+                "PropertyId": parseInt(wo.propertyId),
                 "activeStatus": "Complete"
             }
         })
     }
+
+    
 
 
     render() { 
         return ( 
             <div className="row">
                 <div className="col-lg-6 col-md-3 col-sm-2">
-                    {this.state.workorders && (this.state.currentWorkorders.map(wo => (
-                        <Card className="overflow">
+                    {(this.props.currentWorkorders.map(wo => (
+                        <div>
+                        <br/>
+                        <Card className="overflow" key={wo.orderId}>
                             <Card.Title>Order Number: {wo.orderId}</Card.Title>
                             <Card.Text>From: {wo.user.firstName} {wo.user.lastName}</Card.Text>
                             <Card.Text>Desc: {wo.orderChar}</Card.Text>
                             <Card.Subtitle>About: {wo.property.address.buildingNumber} {wo.property.address.street}</Card.Subtitle>
-                            {this.state.landLordStatus === true && (
+                            <Button variant="outline-danger" onClick={() => this.props.deleteWorkOrder(wo.orderId)} >Delete</Button>
+                            {this.props.landLordStatus && (
                                 <>
-                                    <Button className="mt-3" onClick={this.approveWorkOrder(wo)}>Approve</Button>
-                                    <Button className="mt-4" onClick={this.denyWorkOrder(wo)} >Deny</Button>
-                                    <Button className="mt-1" onClick={this.deleteWorkOrder(wo.orderId)} >Delete</Button>
-                                    <Button className="mt-3" onClick={this.changeStatusComplete(wo)} >Complete</Button>
+                                <Button variant="outline-primary" onClick={() => this.approveWorkOrder(wo)} >Approve</Button>
+                                <Button variant="outline-warning" onClick={() => this.denyWorkOrder(wo)} >Deny</Button>
+                                <Button variant="outline-success" onClick={() => this.changeStatusComplete(wo)} >Mark Complete</Button>
                                 </>
-                            ) }
+                            )}
                         </Card>
+                        
+                        </div>
                     )))}
 
                 </div>
                 <div className="col-lg-6 col-md-3 col-sm-2">
                     <Container>
-                        {this.state.landLordStatus === false && (
-                            <Form onSubmit={this.postNewWorkOrder} >
+                        {this.props.landLordStatus === false && (
+                            <Form onSubmit={this.handleSubmit} >
                                 <Form.Label>Work Order Description: </Form.Label>
-                                <Form.Control name="workOrderField" value={this.state.workOrderField} onChange={this.handleChange} ></Form.Control>
+                                <Form.Control name="OrderChar" value={this.state.OrderChar} onChange={this.handleChange} ></Form.Control>
                                 <Button type="submit" className="mt-3" >Submit</Button>
                             </Form>
                         )}
                         
                     </Container>
                 </div>
-                {this.state.landLordStatus === true && (
+                    <Container>
                     <Table striped bordered hover variant="dark">
                     <thead>
                       <tr>
@@ -160,27 +153,33 @@ class WorkOrders extends Component {
                         <th>From</th>
                         <th>Property</th>
                         <th>Status</th>
-                        <th>Delete</th>
+                        {this.props.landLordStatus === true && (
+                            <th>Delete</th>
+                        )}
                       </tr>
                     </thead>
                     <tbody>
                       
-                        {this.state.historyWorkOrders && (
-                            this.state.historyWorkOrders.map(wo => (
-                                <tr>
+                        {this.props.historyWorkOrders && (
+                            this.props.historyWorkOrders.map(wo => (
+                                <tr key={wo.orderId}>
                                     <td>{wo.orderId}</td>
                                     <td>{wo.user.firstName} {wo.user.lastName}</td>
                                     <td>{wo.property.address.buildingNumber} {wo.property.address.street}</td>
                                     <td>{wo.activeStatus}</td>
-                                    <td>
-                                        <Button className="mt-1" onClick={this.deleteWorkOrder(wo.orderId)} >Delete</Button>
-                                    </td>
+                                    {this.props.landLordStatus === true && (
+                                        <td>
+                                            <Button className="mt-1" onClick={() => this.deleteWorkOrder(wo.orderId)} >Delete</Button>
+                                        </td> 
+                                    )}
+                                    
                                 </tr>
                             ))
                         )}
                     </tbody>
                   </Table>
-                )}
+                  </Container>
+                
             </div>
          );
     }

@@ -11,6 +11,7 @@ import T_PaymentHistory from './components/T_PaymentHistory/T_PaymentHistory';
 import T_PropertyManagement from './components/T_PropertyManagement/T_PropertyManagement';
 import CheckoutForm from './components/CheckoutForm';
 import CreateTenant from './components/CreateTenant/CreateTenant';
+import WorkOrders from './components/WorkOrders/WorkOrders';
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +22,10 @@ class App extends Component {
       isLandLord: false,
       property: '',
       payments: "",
-      tenantInfo: ""
+      tenantInfo: "",
+      workorders: [],
+      currentWorkorders: [],
+      historyWorkOrders: []
      }
   }
 
@@ -33,14 +37,17 @@ class App extends Component {
       if (this.state.isLandLord === false) {
         this.getTenantInfo(this.state.userId);
         this.getTenantPayments(this.state.userId);
+        this.getAllWorkOrders();
         } else {
         this.getLandlordPayments();
+        this.getAllWorkOrders();
         }
       
     } 
     catch {
       console.log('Something went wrong // App Mount');
     }
+    
   }
 
   //If a token is in storage, auto login user
@@ -61,7 +68,7 @@ class App extends Component {
 
   decideLandLordStatus(userId) {
     const Landlords = [
-      "12bb432c-14af-4a4b-9b8e-f0c215d646ef"
+      // "12bb432c-14af-4a4b-9b8e-f0c215d646ef"
     ]
     Landlords.forEach(element => {
       if (element === userId) {
@@ -70,6 +77,39 @@ class App extends Component {
         })
       }
     });
+  }
+
+  async getAllWorkOrders() {
+    await axios({
+        method:"GET",
+        url: "https://localhost:44394/api/workorders",
+
+    }).then(res => {
+        this.setState({
+            workorders: res.data
+        });
+        this.sortWorkOrders(res.data)
+    })
+  }
+
+  sortWorkOrders(arr) {
+    console.log(arr)
+    arr.forEach(element => {
+        if(element.activeStatus === "Pending" || element.activeStatus === "Approved") {
+            this.state.currentWorkorders.push(element);
+        } else {
+            this.state.historyWorkOrders.push(element)
+        }
+    });
+  }
+
+  deleteWorkOrder = async (id) => {
+    await axios({
+        method: "DELETE",
+        url: `https://localhost:44394/api/workorders/${id}`,
+    }).then(res => {
+        alert(`WorkOrder with an Id of ${id} was deleted.`)
+    })
   }
 
 
@@ -134,6 +174,7 @@ class App extends Component {
           <Route path="/TPropertyManagement" element={ <T_PropertyManagement userObject={this.state.user} property={this.state.property} /> } />
           <Route path="/MakePayment" element={ <CheckoutForm price={this.state.tenantInfo.RentAmount} onSuccessfulCheckout={this.onSuccessfulCheckout} /> } />
           <Route path="/Management" element={ <CreateTenant isLandlord={this.state.isLandLord} /> } />
+          <Route path="/WorkOrders" element={ <WorkOrders deleteWorkOrder={this.deleteWorkOrder} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
         </Routes> 
       </div>
 

@@ -29,19 +29,18 @@ function NavBar({user, landLordStatus, logout}) {
                                 <Nav.Link as={Link} to="/TPayment">
                                     Payment
                                 </Nav.Link>
+                                <Nav.Link as={Link} to="/WorkOrders">
+                                    Work Orders
+                                </Nav.Link>
                             </>
                         )}
                         {landLordStatus &&  (
                             <>
-                                {/* <Nav.Link as={Link} to="/LLPropertyManagement">
-                                    Property Management
-                                </Nav.Link> */}
+                                
                                 <Nav.Link as={Link} to="/Management">
                                     Tenant Management
                                 </Nav.Link>
-                                {/* <Nav.Link as={Link} to="/LLPaymentManagement">
-                                    Payment Management
-                                </Nav.Link> */}
+                                
                             </>
                         )}
                     </Nav>
