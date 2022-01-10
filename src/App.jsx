@@ -68,7 +68,7 @@ class App extends Component {
 
   decideLandLordStatus(userId) {
     const Landlords = [
-      // "12bb432c-14af-4a4b-9b8e-f0c215d646ef"
+      "12bb432c-14af-4a4b-9b8e-f0c215d646ef"
     ]
     Landlords.forEach(element => {
       if (element === userId) {

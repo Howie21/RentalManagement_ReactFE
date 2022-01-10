@@ -59,7 +59,8 @@ class CreateTenant extends Component {
       };
 
      //USER POST
-    handleNewUser = async() => {
+    handleNewUser = async(event) => {
+        event.preventDefault();
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/authentication",
@@ -73,11 +74,15 @@ class CreateTenant extends Component {
             }
         }).then(response => {
             console.log(response.data);
+            this.setState({
+                user: response.data
+            })
         });
     }
     //ADDRESS POST 
     
-    handleNewAddress = async() => {
+    handleNewAddress = async(event) => {
+        event.preventDefault();
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/address",
@@ -90,11 +95,15 @@ class CreateTenant extends Component {
             }
         }).then(response => {
             console.log(response.data);
+            this.setState({
+                address: response.data
+            })
         });
     }
     
     //LEASE POST
-    handleNewLease = async() => {
+    handleNewLease = async(event) => {
+        event.preventDefault();
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/leases",
@@ -106,28 +115,36 @@ class CreateTenant extends Component {
             }
         }).then(response => {
             console.log(response.data);
+            this.setState({
+                lease: response.data
+            })
         });
     }
 
     //PROPERTY POST
-    handleNewProperty = async() => {
+    handleNewProperty = async(event) => {
+        event.preventDefault();
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/properties",
             data: {
-                "AddressId": this.state.propertyAddressId,
+                "AddressId": parseInt(this.state.propertyAddressId),
                 "Bathrooms": this.state.propertyBathrooms,
                 "Bedrooms": this.state.propertyBedrooms,
                 "SquareFeet": this.state.propertySquareFeet
             }
         }).then(res => {
             console.log(res.data)
+            this.setState({
+                propertyInfo: res.data
+            })
         });
     }
 
     //TenantInfo POST
 
-    handleNewTenant = async() => {
+    handleNewTenant = async(event) => {
+        event.preventDefault();
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/tenantsinfo",
@@ -142,6 +159,9 @@ class CreateTenant extends Component {
             }
         }).then(res => {
             console.log(res.data);
+            this.setState({
+                tenantInfo: res.data
+            })
         });
     }
 
@@ -244,16 +264,9 @@ class CreateTenant extends Component {
                 <div className="tenantForm">
                     <Container>
                     <h5>New Tenant Form:</h5>
-                        <Form onSubmit={this.handleSubmit}>
+                        <Form onSubmit={this.handleNewTenant}>
                             <Form.Label>Tenant Id: </Form.Label>
-                            {!this.state.user && (
-                                <p>No previous User Account Created</p>
-                            )
-                            }
-                            {this.state.user && (
-                                <p>Previously Created Address Item Id: {this.state.user.Id}</p>
-                            )
-                            }
+                               <p>Previously Created Address Item Id: {this.state.user.id}</p>
                             <Form.Control name="tenantId" value={this.state.tenantId} onChange={this.handleChange}></Form.Control>
                             <Form.Label>Rent Due Date:</Form.Label>
                             <p>Ex: "First of the Month"</p>
