@@ -25,9 +25,12 @@ const pubKey = "pk_test_51KDcicJXchUYprl1UvavVchG4U9sPssYFgINduMtHFWCrPKDCQxOVke
 const stripePromise = loadStripe(pubKey);
 
 const Wrapper = ({ price, onSuccessfulCheckout}) => {
-  <Elements stripe={stripePromise}>
-    <CheckoutForm price={price} onSuccessfulCheckout={onSuccessfulCheckout} />
-  </Elements>
+  return (
+    <Elements stripe={stripePromise}>
+      <CheckoutForm price={price} onSuccessfulCheckout={onSuccessfulCheckout} />
+    </Elements>
+  );
+  
 }
 
 const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
