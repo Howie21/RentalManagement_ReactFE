@@ -2,6 +2,8 @@ import { useState } from "react";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import styled from "@emotion/styled";
 import axios from "axios";
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 
 import Row from "./prebuilt/Row";
 import BillingDetailsFields from "./prebuilt/BillingDetailsFields";
@@ -18,6 +20,15 @@ const CardElementContainer = styled.div`
     padding: 15px;
   }
 `;
+
+const pubKey = "pk_test_51KDcicJXchUYprl1UvavVchG4U9sPssYFgINduMtHFWCrPKDCQxOVkegJEznXh2Oq5nabIWusMw5AlHDbOATMBwW00uhLPNm2Q"
+const stripePromise = loadStripe(pubKey);
+
+const Wrapper = ({ price, onSuccessfulCheckout}) => {
+  <Elements stripe={stripePromise}>
+    <CheckoutForm price={price} onSuccessfulCheckout={onSuccessfulCheckout} />
+  </Elements>
+}
 
 const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   const [isProcessing, setProcessingTo] = useState(false);
@@ -145,4 +156,4 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
   );
 };
 
-export default CheckoutForm;
+export default Wrapper;
