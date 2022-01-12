@@ -3,7 +3,7 @@ import React from 'react';
 
 
 
-function T_PropertyManagement(props) {
+function TPropertyManagement(props) {
     
     return ( 
         <div>
@@ -12,13 +12,14 @@ function T_PropertyManagement(props) {
                 <p>Here you can make your payment</p>
             </div>
             <div>
-                <h4>Property</h4>
+                <h4>Property:</h4>
+                <br/>
                 <ul>
-                    <li>Property Id: {props.property.propertyId}</li>
-                    <li>Rent Amount: {props.property.rentAmount}</li>
-                    <li>Rent Due Date: {props.property.rentDueDate}</li>
-                    <li>Address: {props.property.property.address.buildingNumber} {props.property.property.address.street} {props.property.property.address.city} {props.property.property.address.state}, {props.property.property.address.zipCode}</li>
-                    <li>Tenant Id: {props.property.id}</li>
+                    <li>Property Id: {props.property.id}</li>
+                    <li>Square Feet: {props.property.squareFeet}</li>
+                    <li>Bathrooms: {props.property.bathrooms}</li>
+                    <li>Bedrooms: {props.property.bedrooms}</li>
+                    <li>Address: {props.property.address.buildingNumber} {props.property.address.street} {props.property.address.city} {props.property.address.state}, {props.property.address.zipCode}</li>
                 </ul>
             </div>
             <div>
@@ -29,4 +30,4 @@ function T_PropertyManagement(props) {
      );
 }
 
-export default T_PropertyManagement;
+export default TPropertyManagement;

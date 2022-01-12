@@ -2,13 +2,14 @@
 import React, { Component } from 'react';
 import { Route, Routes} from 'react-router-dom';
 import axios from 'axios';
+import { Elements } from '@stripe/react-stripe-js';
 
 //Imports from component files
 import NavBar from "./components/NavBar/NavBar"
 import LandingPage from './components/LandingPage/LandingPage';
 import Login from './components/Login/Login';
 import T_PaymentHistory from './components/T_PaymentHistory/T_PaymentHistory';
-import T_PropertyManagement from './components/T_PropertyManagement/T_PropertyManagement';
+import TPropertyManagement from './components/T_PropertyManagement/T_PropertyManagement';
 import CheckoutForm from './components/CheckoutForm';
 import CreateTenant from './components/CreateTenant/CreateTenant';
 import WorkOrders from './components/WorkOrders/WorkOrders';
@@ -171,8 +172,8 @@ class App extends Component {
           <Route path='/' exact element={ <LandingPage /> } />
           <Route path="/login" element={ <Login /> } />
           <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} payments={ this.state.payments } /> } />
-          <Route path="/TPropertyManagement" element={ <T_PropertyManagement userObject={this.state.user} property={this.state.property} /> } />
-          <Route path="/MakePayment" element={ <CheckoutForm price={this.state.tenantInfo.RentAmount} onSuccessfulCheckout={this.onSuccessfulCheckout} /> } />
+          <Route path="/TPropertyManagement" element={ <TPropertyManagement userObject={this.state.user} property={this.state.property} /> } />
+          <Route path="/MakePayment" element={ <Elements><CheckoutForm price={this.state.tenantInfo.rentAmount} onSuccessfulCheckout={this.onSuccessfulCheckout} /></Elements> } />
           <Route path="/Management" element={ <CreateTenant isLandlord={this.state.isLandLord} /> } />
           <Route path="/WorkOrders" element={ <WorkOrders deleteWorkOrder={this.deleteWorkOrder} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
         </Routes> 
