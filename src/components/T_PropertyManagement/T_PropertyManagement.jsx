@@ -23,6 +23,16 @@ function TPropertyManagement(props) {
                 </ul>
             </div>
             <div>
+                <h5>Lease Information</h5>
+                <ul>
+                    <li>Lease ID: {props.tenantInfo.lease.id}</li>
+                    <li>Lease Number: {props.tenantInfo.lease.leaseNumber}</li>
+                    <li>Start Date: {props.tenantInfo.lease.startDate}</li>
+                    <li>End Date: {props.tenantInfo.lease.endDate}</li>
+                    <li>Safety Deposit: {props.tenantInfo.lease.safetyDeposit}</li>
+                </ul>
+            </div>
+            <div>
                 <h5>Wanna make a payment? Click the button below!!</h5>
                 <button className='btn btn-secondary' onClick={() => window.location="/MakePayment"} >Make Payment</button>
             </div>

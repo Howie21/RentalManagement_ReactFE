@@ -54,6 +54,7 @@ class WorkOrders extends Component {
             }
         }).then(res => {
             alert("New Work Order submitted!");
+            this.props.getAllWorkOrders();
         });
     }
 
@@ -86,7 +87,9 @@ class WorkOrders extends Component {
                 "PropertyId": parseInt(wo.propertyId),
                 "activeStatus": "Denied"
             }
-        })
+        }).then(res => {
+            console.log(res.data)
+        });
     }
 
     changeStatusComplete = async(wo) => {
@@ -102,6 +105,15 @@ class WorkOrders extends Component {
                 "activeStatus": "Complete"
             }
         })
+    }
+
+    deleteWorkOrder = async(id) => {
+        await axios({
+            method: "DELETE",
+            url:`https://localhost:44394/api/workorders/${id}`,
+        }).then(res => {
+            console.log("Work Order deleted")
+        });
     }
 
     
@@ -158,8 +170,7 @@ class WorkOrders extends Component {
                         )}
                       </tr>
                     </thead>
-                    <tbody>
-                      
+                    <tbody>        
                         {this.props.historyWorkOrders && (
                             this.props.historyWorkOrders.map(wo => (
                                 <tr key={wo.orderId}>

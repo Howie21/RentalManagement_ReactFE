@@ -40,7 +40,7 @@ class App extends Component {
       if (this.state.isLandLord === false) {
         this.getTenantInfo(this.state.userId);
         this.getTenantPayments(this.state.userId);
-        this.getAllWorkOrders();
+        this.getWorkOrdersById();
         } else {
         this.getLandlordPayments();
         this.getAllWorkOrders();
@@ -82,10 +82,23 @@ class App extends Component {
     });
   }
 
+  async getWorkOrdersById() {
+    await axios({
+      method:"GET",
+      url: `https://localhost:44394/api/workorders/${this.state.userId}`,
+
+    }).then(res => {
+        this.setState({
+            workorders: res.data
+        });
+        this.sortWorkOrders(res.data)
+    })
+  }
+
   async getAllWorkOrders() {
     await axios({
         method:"GET",
-        url: "https://localhost:44394/api/workorders",
+        url: `https://localhost:44394/api/workorders`,
 
     }).then(res => {
         this.setState({
@@ -174,10 +187,10 @@ class App extends Component {
           <Route path='/' exact element={ <LandingPage /> } />
           <Route path="/login" element={ <Login /> } />
           <Route path="/TPayment" element={ <T_PaymentHistory userObject={this.state.user} payments={ this.state.payments } /> } />
-          <Route path="/TPropertyManagement" element={ <TPropertyManagement userObject={this.state.user} property={this.state.property} /> } />
+          <Route path="/TPropertyManagement" element={ <TPropertyManagement userObject={this.state.user} property={this.state.property} tenantInfo={this.state.tenantInfo} /> } />
           <Route path="/MakePayment" element={ <Wrapper price={this.state.tenantInfo.rentAmount} onSuccessfulCheckout={this.onSuccessfulCheckout} /> } />
           <Route path="/Management" element={ <CreateTenant isLandlord={this.state.isLandLord} /> } />
-          <Route path="/WorkOrders" element={ <WorkOrders deleteWorkOrder={this.deleteWorkOrder} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
+          <Route path="/WorkOrders" element={ <WorkOrders deleteWorkOrder={this.deleteWorkOrder} getAllWorkOrders={this.getAllWorkOrders} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
         </Routes> 
       </div>
 
