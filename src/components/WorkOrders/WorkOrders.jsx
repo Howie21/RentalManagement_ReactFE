@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Container, Card, Table} from "react-bootstrap";
 import axios from 'axios';
+import "../WorkOrders/WorkOrders.css";
 
 class WorkOrders extends Component {
     constructor(props) {
@@ -121,24 +122,27 @@ class WorkOrders extends Component {
 
     render() { 
         return ( 
-            <div className="row">
+            <div className="row workOrderPage">
                 <div className="col-lg-6 col-md-3 col-sm-2">
                     {(this.props.currentWorkorders.map(wo => (
-                        <div>
+                        <div className="cardContainer">
                         <br/>
-                        <Card className="overflow" key={wo.orderId}>
+                        <Card className="overflow cardContainer" key={wo.orderId}>
                             <Card.Title>Order Number: {wo.orderId}</Card.Title>
                             <Card.Text>From: {wo.user.firstName} {wo.user.lastName}</Card.Text>
                             <Card.Text>Desc: {wo.orderChar}</Card.Text>
                             <Card.Subtitle>About: {wo.property.address.buildingNumber} {wo.property.address.street}</Card.Subtitle>
-                            <Button variant="outline-danger" onClick={() => this.props.deleteWorkOrder(wo.orderId)} >Delete</Button>
-                            {this.props.landLordStatus && (
+                            <Container>
+                                <Button variant="danger col-5" size="sm" onClick={() => this.props.deleteWorkOrder(wo.orderId)} >Delete</Button>{" | "} 
+                                {this.props.landLordStatus && (
                                 <>
-                                <Button variant="outline-primary" onClick={() => this.approveWorkOrder(wo)} >Approve</Button>
-                                <Button variant="outline-warning" onClick={() => this.denyWorkOrder(wo)} >Deny</Button>
-                                <Button variant="outline-success" onClick={() => this.changeStatusComplete(wo)} >Mark Complete</Button>
+                                <Button variant="warning col-5 optionButton" size="sm" onClick={() => this.denyWorkOrder(wo)} >Deny</Button>{" "}
+                                <br></br>
+                                <Button variant="primary col-5 optionButton" size="sm" onClick={() => this.approveWorkOrder(wo)} >Approve</Button>{" | "}
+                                <Button variant="success col-5 optionButton" size="sm" onClick={() => this.changeStatusComplete(wo)} >Mark Complete</Button>
                                 </>
-                            )}
+                                )}
+                            </Container>
                         </Card>
                         
                         </div>
@@ -157,8 +161,8 @@ class WorkOrders extends Component {
                         
                     </Container>
                 </div>
-                    <Container>
-                    <Table striped bordered hover variant="dark">
+                    <Container className="">
+                    <Table striped bordered hover variant="dark historyTable">
                     <thead>
                       <tr>
                         <th>Order Id</th>
@@ -190,7 +194,17 @@ class WorkOrders extends Component {
                     </tbody>
                   </Table>
                   </Container>
-                
+                <br/>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
+                <p>{" "}</p>
             </div>
          );
     }
