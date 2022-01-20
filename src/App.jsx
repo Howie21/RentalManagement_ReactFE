@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Route, Routes} from 'react-router-dom';
 import axios from 'axios';
-
+import "./App.css";
 
 //Imports from component files
 import NavBar from "./components/NavBar/NavBar"
