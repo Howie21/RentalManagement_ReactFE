@@ -134,7 +134,7 @@ class CreateTenant extends Component {
                 "SquareFeet": this.state.propertySquareFeet
             }
         }).then(res => {
-            console.log(res.data)
+            console.log("Property Info",res.data)
             this.setState({
                 propertyInfo: res.data
             })
@@ -246,7 +246,7 @@ class CreateTenant extends Component {
                             )
                             }
                             {this.state.address && (
-                                <p>Previously Created Address Item Id: {this.state.address.Id}</p>
+                                <p>Previously Created Address Item Id: {this.state.address.id}</p>
                             )
                             }
                             <Form.Control name="propertyAddressId" value={this.state.propertyAddressId} onChange={this.handleChange}></Form.Control>
@@ -283,7 +283,7 @@ class CreateTenant extends Component {
                             )
                             }
                             {this.state.propertyInfo && (
-                                <p>Previously Property Id: {this.state.propertyInfo.Id}</p>
+                                <p>Previously Property Id: {this.state.propertyInfo.id}</p>
                             )
                             }
                             <Form.Control name="tenantPropertyId" value={this.state.tenantPropertyId} onChange={this.handleChange} ></Form.Control>
