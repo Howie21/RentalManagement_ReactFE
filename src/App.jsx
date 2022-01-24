@@ -37,20 +37,21 @@ class App extends Component {
     const jwt = localStorage.getItem('token');
     try {
       this.getUser(jwt);
-      if (this.state.isLandLord === false) {
-        this.getTenantInfo(this.state.userId);
-        this.getTenantPayments(this.state.userId);
-        this.getWorkOrdersById();
-        } else {
-        this.getLandlordPayments();
-        this.getAllWorkOrders();
-        }
+        
+        
+       
+      
       
     } 
     catch {
       console.log('Something went wrong // App Mount');
     }
     
+  }
+
+  moveWorkOrder = (wo) => {
+    this.getAllWorkOrders();
+    this.state.currentWorkorders[this.state.currentWorkorders.indexOf(wo)].push(this.state.historyWorkOrders);
   }
 
   //If a token is in storage, auto login user
@@ -79,6 +80,14 @@ class App extends Component {
           isLandLord: true
         })
       }
+      if (this.state.isLandLord === false) {
+        this.getTenantInfo();
+        this.getTenantPayments();
+        this.getWorkOrdersById();
+        } else {
+        this.getLandlordPayments();
+        this.getAllWorkOrders();
+        }
     });
   }
 
@@ -86,7 +95,6 @@ class App extends Component {
     await axios({
       method:"GET",
       url: `https://localhost:44394/api/workorders/${this.state.userId}`,
-
     }).then(res => {
         this.setState({
             workorders: res.data
@@ -99,7 +107,6 @@ class App extends Component {
     await axios({
         method:"GET",
         url: `https://localhost:44394/api/workorders`,
-
     }).then(res => {
         this.setState({
             workorders: res.data
@@ -129,25 +136,28 @@ class App extends Component {
   }
 
 
-  async getTenantInfo(userId) {
+  async getTenantInfo() {
     let info = await axios({
       method: "GET",
-      url: `https://localhost:44394/api/tenantsinfo/${userId}`
+      url: `https://localhost:44394/api/tenantsinfo/${this.state.userId}`
+    }).then(res => {
+      this.setState({
+      property: res.data[0].property,
+      tenantInfo: res.data[0]
+      })
     });
-    this.setState({
-      property: info.data[0].property,
-      tenantInfo: info.data[0]
-    })
+    
   }
 
-  async getTenantPayments(userId) {
+  async getTenantPayments() {
     await axios({
       method: "GET",
-      url: `https://localhost:44394/api/payments/${userId}`
+      url: `https://localhost:44394/api/payments/${this.state.userId}`
     }).then(res => {
       this.setState({
         payments: res.data
       })
+      console.log(res);
     })
   }
 
@@ -166,6 +176,7 @@ class App extends Component {
     localStorage.removeItem('token');
     this.setState({
       user: '',
+      isLandLord: false,
     });
   };
 
@@ -190,7 +201,7 @@ class App extends Component {
           <Route path="/TPropertyManagement" element={ <TPropertyManagement userObject={this.state.user} property={this.state.property} tenantInfo={this.state.tenantInfo} /> } />
           <Route path="/MakePayment" element={ <Wrapper price={this.state.tenantInfo.rentAmount} onSuccessfulCheckout={this.onSuccessfulCheckout} /> } />
           <Route path="/Management" element={ <CreateTenant isLandlord={this.state.isLandLord} /> } />
-          <Route path="/WorkOrders" element={ <WorkOrders deleteWorkOrder={this.deleteWorkOrder} getAllWorkOrders={this.getAllWorkOrders} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
+          <Route path="/WorkOrders" element={ <WorkOrders moveWorkOrder={this.moveWorkOrder} deleteWorkOrder={this.deleteWorkOrder} getAllWorkOrders={this.getAllWorkOrders} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
         </Routes> 
       </div>
 
