@@ -4,6 +4,7 @@ import { Container } from 'react-bootstrap';
 
 
 
+
 function TPropertyManagement(props) {
     
     return ( 
@@ -15,8 +16,8 @@ function TPropertyManagement(props) {
             </div>
             </Container>
             <div className="row">
-                <Container className="infoContainer">
-                <div className="col-6">
+                {/* <Container className="infoContainer"> */}
+                <div className="col-5 propertyBox">
                     <h5 className="text-center">Property:</h5>
                     <br/>
                     <ul>
@@ -27,9 +28,9 @@ function TPropertyManagement(props) {
                         <li>Address: {props.property.address.buildingNumber} {props.property.address.street} {props.property.address.city} {props.property.address.state}, {props.property.address.zipCode}</li>
                     </ul>
                 </div>
-                </Container>
-                <Container className="infoContainer">
-                <div className="col-6">
+                {/* </Container> */}
+                {/* <Container className="infoContainer"> */}
+                <div className="col-5 leaseBox">
                     <h5 className="text-center">Lease Information</h5>
                     <ul>
                         <li>Lease ID: {props.tenantInfo.lease.id}</li>
@@ -39,9 +40,9 @@ function TPropertyManagement(props) {
                         <li>Safety Deposit: {props.tenantInfo.lease.safetyDeposit}</li>
                     </ul>
                 </div>
-                </Container>
+                {/* </Container> */}
             </div>
-            <div>
+            <div className="text-center">
                 <h5>Wanna make a payment? Click the button below!!</h5>
                 <button className='btn btn-success' onClick={() => window.location="/MakePayment"} >Make Payment</button>
             </div>

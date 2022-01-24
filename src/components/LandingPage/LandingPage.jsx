@@ -1,5 +1,6 @@
 import React from 'react';
-import "./LandingPage.css"
+import "./LandingPage.css";
+import image from "../imgs/Management.jpg";
 
 
 function LandingPage() {
@@ -22,6 +23,9 @@ function LandingPage() {
                 <div className="col-lg-6 col-md-3 col-sm-2 row text-center testDiv3">
                     <p className=" text-center"></p>
                 </div>
+            </div>
+            <div className="text-center">
+                <img src={image} alt="team" height="300" width="700"></img>
             </div>
         </div>
      );
