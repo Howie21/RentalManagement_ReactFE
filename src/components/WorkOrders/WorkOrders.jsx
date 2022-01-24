@@ -74,6 +74,7 @@ class WorkOrders extends Component {
             }
         })
         console.log(call);
+        this.props.moveWorkOrder(call.data);
     }
 
     denyWorkOrder = async(wo) => {
@@ -89,7 +90,8 @@ class WorkOrders extends Component {
                 "activeStatus": "Denied"
             }
         }).then(res => {
-            console.log(res.data)
+            console.log(res.data);
+            this.props.getAllWorkOrders();
         });
     }
 
@@ -105,6 +107,8 @@ class WorkOrders extends Component {
                 "PropertyId": parseInt(wo.propertyId),
                 "activeStatus": "Complete"
             }
+        }).then(res => {
+            this.props.getAllWorkOrders();
         })
     }
 
@@ -114,6 +118,7 @@ class WorkOrders extends Component {
             url:`https://localhost:44394/api/workorders/${id}`,
         }).then(res => {
             console.log("Work Order deleted")
+            this.props.getAllWorkOrders();
         });
     }
 
