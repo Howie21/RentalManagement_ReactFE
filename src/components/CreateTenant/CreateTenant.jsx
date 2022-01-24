@@ -75,7 +75,8 @@ class CreateTenant extends Component {
         }).then(response => {
             console.log(response.data);
             this.setState({
-                user: response.data
+                user: response.data,
+                tenantId: response.data.id,
             })
         });
     }
@@ -96,7 +97,8 @@ class CreateTenant extends Component {
         }).then(response => {
             console.log(response.data);
             this.setState({
-                address: response.data
+                address: response.data,
+                propertyAddressId: response.data.id
             })
         });
     }
@@ -116,7 +118,8 @@ class CreateTenant extends Component {
         }).then(response => {
             console.log(response.data);
             this.setState({
-                lease: response.data
+                lease: response.data,
+                tenantLeaseId: response.data.id,
             })
         });
     }
@@ -136,7 +139,8 @@ class CreateTenant extends Component {
         }).then(res => {
             console.log("Property Info",res.data)
             this.setState({
-                propertyInfo: res.data
+                propertyInfo: res.data,
+                tenantPropertyId: res.data.id
             })
         });
     }
