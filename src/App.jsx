@@ -67,7 +67,7 @@ class App extends Component {
 
   decideLandLordStatus(userId) {
     const Landlords = [
-      "12bb432c-14af-4a4b-9b8e-f0c215d646ef"
+      "39e1133f-da9c-4e1f-9f48-4ecc4602fd67"
     ]
     Landlords.forEach(element => {
       if (element === userId) {
@@ -126,6 +126,8 @@ class App extends Component {
             this.state.historyWorkOrders.push(element)
         }
       });
+    } else if (arr.length === 0){
+      return;
     } else {
       if(arr[0].activeStatus === "Pending" || arr[0].activeStatus === "Approved") {
         this.state.currentWorkorders.push(arr[0]);
