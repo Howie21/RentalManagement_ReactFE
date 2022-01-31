@@ -29,7 +29,7 @@ function NavBar({user, landLordStatus, logout}) {
                                 <Nav.Link as={Link} to="/WorkOrders">
                                     Work Orders
                                 </Nav.Link>
-                                {landLordStatus == false && (
+                                {landLordStatus === false && (
                                     <>
                                         <Nav.Link as={Link} to="/TPropertyManagement">
                                             Property Management
