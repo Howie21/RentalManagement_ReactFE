@@ -59,7 +59,7 @@ class CreateTenant extends Component {
       };
 
      //USER POST
-    handleNewUser = async(event) => {
+    handleNewUser = async(event, userObject) => {
         event.preventDefault();
         await axios({
             method: "POST",
