@@ -68,7 +68,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
 
     try {
       const { data: clientSecret } = await axios.post("/api/payment_intents", {
-        amount: price * 100
+        amount: price
       });
 
       const paymentMethodReq = await stripe.createPaymentMethod({
@@ -78,6 +78,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
       });
 
       if (paymentMethodReq.error) {
+        console.log(paymentMethodReq.error.message + "There was an error heere");
         setCheckoutError(paymentMethodReq.error.message);
         setProcessingTo(false);
         return;
@@ -88,6 +89,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
       });
 
       if (error) {
+        console.log(error)
         setCheckoutError(error.message);
         setProcessingTo(false);
         return;
@@ -95,6 +97,7 @@ const CheckoutForm = ({ price, onSuccessfulCheckout }) => {
 
       onSuccessfulCheckout();
     } catch (err) {
+      console.log(err);
       setCheckoutError(err.message);
     }
   };

@@ -56,6 +56,7 @@ class WorkOrders extends Component {
         }).then(res => {
             alert("New Work Order submitted!");
             this.props.getAllWorkOrders();
+            window.location = "/"
         });
     }
 
@@ -109,6 +110,7 @@ class WorkOrders extends Component {
             }
         }).then(res => {
             this.props.getAllWorkOrders();
+            window.location = "/";
         })
     }
 
@@ -119,6 +121,7 @@ class WorkOrders extends Component {
         }).then(res => {
             console.log("Work Order deleted")
             this.props.getAllWorkOrders();
+            window.location = "/";
         });
     }
 

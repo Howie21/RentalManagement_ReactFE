@@ -37,11 +37,6 @@ class App extends Component {
     const jwt = localStorage.getItem('token');
     try {
       this.getUser(jwt);
-        
-        
-       
-      
-      
     } 
     catch {
       console.log('Something went wrong // App Mount');
@@ -84,26 +79,32 @@ class App extends Component {
         this.getTenantInfo();
         this.getTenantPayments();
         this.getWorkOrdersById();
-        } else {
+      } else {
         this.getLandlordPayments();
         this.getAllWorkOrders();
-        }
+      }
     });
   }
 
-  async getWorkOrdersById() {
+  getWorkOrdersById = async() => {
     await axios({
       method:"GET",
       url: `https://localhost:44394/api/workorders/${this.state.userId}`,
     }).then(res => {
+      if(res.data === []){
+        console.log('Fetched no work orders')
+      } else {
         this.setState({
             workorders: res.data
         });
         this.sortWorkOrders(res.data)
+      }
+        
+        
     })
   }
 
-  async getAllWorkOrders() {
+  getAllWorkOrders = async() => {
     await axios({
         method:"GET",
         url: `https://localhost:44394/api/workorders`,
@@ -117,13 +118,22 @@ class App extends Component {
 
   sortWorkOrders(arr) {
     console.log(arr)
-    arr.forEach(element => {
+    if(arr.length > 1){
+      arr.forEach(element => {
         if(element.activeStatus === "Pending" || element.activeStatus === "Approved") {
             this.state.currentWorkorders.push(element);
         } else {
             this.state.historyWorkOrders.push(element)
         }
-    });
+      });
+    } else {
+      if(arr[0].activeStatus === "Pending" || arr[0].activeStatus === "Approved") {
+        this.state.currentWorkorders.push(arr[0]);
+      } else {
+        this.state.historyWorkOrders.push(arr[0]);
+      }
+    }
+    
   }
 
   deleteWorkOrder = async (id) => {
@@ -141,9 +151,10 @@ class App extends Component {
       method: "GET",
       url: `https://localhost:44394/api/tenantsinfo/${this.state.userId}`
     }).then(res => {
+      console.log(res)
       this.setState({
-      property: res.data[0].property,
-      tenantInfo: res.data[0]
+      property: res.data.property,
+      tenantInfo: res.data
       })
     });
     
@@ -201,7 +212,7 @@ class App extends Component {
           <Route path="/TPropertyManagement" element={ <TPropertyManagement userObject={this.state.user} property={this.state.property} tenantInfo={this.state.tenantInfo} /> } />
           <Route path="/MakePayment" element={ <Wrapper price={this.state.tenantInfo.rentAmount} onSuccessfulCheckout={this.onSuccessfulCheckout} /> } />
           <Route path="/Management" element={ <CreateTenant isLandlord={this.state.isLandLord} /> } />
-          <Route path="/WorkOrders" element={ <WorkOrders moveWorkOrder={this.moveWorkOrder} deleteWorkOrder={this.deleteWorkOrder} getAllWorkOrders={this.getAllWorkOrders} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
+          <Route path="/WorkOrders" element={ <WorkOrders moveWorkOrder={this.moveWorkOrder} deleteWorkOrder={this.deleteWorkOrder} getAllWorkOrders={this.getWorkOrdersById} historyWorkOrders={this.state.historyWorkOrders} currentWorkorders={this.state.currentWorkorders} UserId={this.state.userId} landLordStatus={this.state.isLandLord} property={this.state.property} /> } />
         </Routes> 
       </div>
 

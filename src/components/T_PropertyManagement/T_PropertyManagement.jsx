@@ -44,7 +44,7 @@ function TPropertyManagement(props) {
             </div>
             <div className="text-center">
                 <h5>Wanna make a payment? Click the button below!!</h5>
-                <button className='btn btn-success' onClick={() => window.location="/MakePayment"} >Make Payment</button>
+                <button className='btn btn-success' onClick={() => window.open("https://buy.stripe.com/test_dR68wz3KL5IY4ow7ss")} >Make Payment</button>
             </div>
         </div>
      );

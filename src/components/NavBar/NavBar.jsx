@@ -12,7 +12,7 @@ function NavBar({user, landLordStatus, logout}) {
         <Navbar collapseOnSelect expand='lg' bg='dark' variant='dark'>
             <Container>
                 <Navbar.Brand as={Link} to="/">
-                    Rental's
+                    Rental
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id='responsive-navbar-nav' >
@@ -23,17 +23,22 @@ function NavBar({user, landLordStatus, logout}) {
                         
                         {user && (
                             <>
-                                <Nav.Link as={Link} to="/TPropertyManagement">
-                                    Property Management
-                                </Nav.Link>
                                 <Nav.Link as={Link} to="/TPayment">
                                     Payment
                                 </Nav.Link>
                                 <Nav.Link as={Link} to="/WorkOrders">
                                     Work Orders
                                 </Nav.Link>
+                                {landLordStatus == false && (
+                                    <>
+                                        <Nav.Link as={Link} to="/TPropertyManagement">
+                                            Property Management
+                                        </Nav.Link>
+                                    </>
+                                )}
                             </>
                         )}
+                        
                         {landLordStatus &&  (
                             <>
                                 

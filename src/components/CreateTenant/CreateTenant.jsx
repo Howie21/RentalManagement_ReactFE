@@ -113,7 +113,7 @@ class CreateTenant extends Component {
                 "LeaseNumber": this.state.leaseLeaseNumber,
                 "StartDate": this.state.leaseStartDate,
                 "EndDate": this.state.leaseEndDate,
-                "SafetyDeposit": `$${this.state.leaseSafetyDeposit}`
+                "SafetyDeposit": `${this.state.leaseSafetyDeposit}`
             }
         }).then(response => {
             console.log(response.data);
@@ -155,7 +155,7 @@ class CreateTenant extends Component {
             data: {
                 "TenantId": this.state.tenantId,
                 "RentDueDate": this.state.tenantRentDueDate,
-                "RentAmount": `$${this.state.tenantRentAmount}`,
+                "RentAmount": `${this.state.tenantRentAmount}`,
                 "LicenseNumber": this.state.tenantLicenseNumber,
                 "Age": parseInt(this.state.tenantAge),
                 "PropertyId": parseInt(this.state.tenantPropertyId),
@@ -166,6 +166,8 @@ class CreateTenant extends Component {
             this.setState({
                 tenantInfo: res.data
             })
+            alert("New Tenant account is functional")
+            window.location = "/"
         });
     }
 
