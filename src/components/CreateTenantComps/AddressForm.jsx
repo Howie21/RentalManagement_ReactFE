@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {Container, Form, Button} from "react-bootstrap";
 
-function logMessage(msg) {
-    
-};
 
 function AddressForm(props) {
     const [buildingNumber, setBuildingNumber] = useState("");
@@ -13,22 +10,23 @@ function AddressForm(props) {
     const [zipCode, setZipCode] = useState("");
 
     const sendPackage = {
-        
-        userObject = {
             "BuildingNumber": buildingNumber,
             "Street": street,
             "City": city,
             "State": state,
             "ZipCode": zipCode  
         }
-        // send userObject to reference from CT
-    };
+    
+    function handleSubmit(e) {
+        e.preventDefault();
+        props.handleNewAddress(sendPackage)
+    }
 
     return ( 
         <Container>
             <h5 className="text-center">Address Information:</h5>
             <p className="text-center"> If you already have address information just press submit </p>
-            <Form onSubmit={sendPackage}>
+            <Form onSubmit={handleSubmit}>
                 <Form.Label>Building Number:</Form.Label>
                 <Form.Control name="buildingNumber" value={buildingNumber} onChange={e => setBuildingNumber(e.target.value)}></Form.Control>
                 <Form.Label>Street:</Form.Label>
