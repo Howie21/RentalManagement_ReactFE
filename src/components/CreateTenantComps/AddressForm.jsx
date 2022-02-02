@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {Container, Form, Button} from "react-bootstrap";
 
 
@@ -8,6 +8,7 @@ function AddressForm(props) {
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
     const [zipCode, setZipCode] = useState("");
+    const [buttonLoad, setbuttonLoad] = useState("Submit Address");
 
     const sendPackage = {
             "BuildingNumber": buildingNumber,
@@ -19,12 +20,13 @@ function AddressForm(props) {
     
     function handleSubmit(e) {
         e.preventDefault();
-        props.handleNewAddress(sendPackage)
+        setbuttonLoad("Processing");
+        props.handleNewAddress(sendPackage).then(() => {setbuttonLoad("Success!")});
     }
 
     return ( 
         <Container>
-            <h5 className="text-center">Address Information:</h5>
+            
             <p className="text-center"> If you already have address information just press submit </p>
             <Form onSubmit={handleSubmit}>
                 <Form.Label>Building Number:</Form.Label>
@@ -37,7 +39,7 @@ function AddressForm(props) {
                 <Form.Control name="state" value={state} onChange={e => setState(e.target.value)}></Form.Control>
                 <Form.Label>Zip Code:</Form.Label>
                 <Form.Control name="zipCode" value={zipCode} onChange={e => setZipCode(e.target.value)}></Form.Control>
-                <Button type="submit" className='mt-3'>Submit Address</Button>
+                <Button type="submit" className='mt-3'>{buttonLoad}</Button>
             </Form>
         </Container>
      );
