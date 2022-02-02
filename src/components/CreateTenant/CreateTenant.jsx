@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Button, Container, Modal } from "react-bootstrap";
+
+
+import AddressForm from '../CreateTenantComps/AddressForm';
+import LeaseForm from '../CreateTenantComps/LeaseForm';
+import PropertyForm from '../CreateTenantComps/PropertyForm';
+import TenantForm from '../CreateTenantComps/TenantForm';
 
 class CreateTenant extends Component {
     constructor(props) {
@@ -11,6 +17,8 @@ class CreateTenant extends Component {
             propertyInfo: "",
             address: "",
             lease: "",
+            button: "Submit User",
+            propertyAddressId: "",
 
             //User Feilds:
             userFirstName: "",
@@ -19,34 +27,13 @@ class CreateTenant extends Component {
             userPassword: "",
             userEmail: "",
             userPhoneNumber: "",
-
-            //Address feilds:
-            addressBuildingNumber: "",
-            addressStreet: "",
-            addressCity: "",
-            addressState: "",
-            addressZipCode: "",
+            userError: "",
             
-            //Property Feilds:
-            propertyAddressId: "",
-            propertyBathrooms: "",
-            propertyBedrooms: "",
-            propertySquareFeet: "",
-
-            //Lease Feilds:
-            leaseLeaseNumber: "",
-            leaseStartDate: "",
-            leaseEndDate: "",
-            leaseSafetyDeposit: "",
-
-            //TenantInfo Feilds:
-            tenantId: "",
-            tenantRentDueDate: "",
-            tenantRentAmount: "$",
-            tenantLicenseNumber: "",
-            tenantAge: "",
-            tenantPropertyId: "",
-            tenantLeaseId: ""
+            //Modals
+            addressModal: false,
+            leaseModal: false,
+            propertyModal: false,
+            tenantInfoModal: false,
 
          }
     }
@@ -59,8 +46,9 @@ class CreateTenant extends Component {
       };
 
      //USER POST
-    handleNewUser = async(event, userObject) => {
+    handleNewUser = async(event) => {
         event.preventDefault();
+        this.setState({ button: "Processing..." });
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/authentication",
@@ -72,94 +60,123 @@ class CreateTenant extends Component {
                 "email": this.state.userEmail,
                 "phonenumber": this.state.userPhoneNumber
             }
-        }).then(response => {
-            console.log(response.data);
+        }).then(res => {
+            console.log(res.data);
             this.setState({
-                user: response.data,
-                tenantId: response.data.id,
+                user: res.data,
+                tenantId: res.data.id,
+                button: "Successful",
+                addressModal: true,
             })
         });
+        
+        
     }
     //ADDRESS POST 
     
-    handleNewAddress = async(event) => {
-        event.preventDefault();
+    handleNewAddress = async(pack) => {
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/address",
             data: {
-                "BuildingNumber": this.state.addressBuildingNumber,
-                "Street": this.state.addressStreet,
-                "City": this.state.addressCity,
-                "State": this.state.addressState,
-                "ZipCode": this.state.addressZipCode  
+                "BuildingNumber": pack.BuildingNumber,
+                "Street": pack.Street,
+                "City": pack.City,
+                "State": pack.State,
+                "ZipCode": pack.ZipCode  
             }
         }).then(response => {
             console.log(response.data);
             this.setState({
                 address: response.data,
-                propertyAddressId: response.data.id
+                propertyAddressId: response.data.id,
+                addressModal: false,
+                leaseModal: true
             })
         });
     }
+
+    showAddressModal = () => {
+        this.setState({ addressModal: true });
+    }
+
+    hideAddressModal = () => {
+        this.setState({ addressModal: false });
+    }
     
     //LEASE POST
-    handleNewLease = async(event) => {
-        event.preventDefault();
+    handleNewLease = async(pack) => {
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/leases",
             data: {
-                "LeaseNumber": this.state.leaseLeaseNumber,
-                "StartDate": this.state.leaseStartDate,
-                "EndDate": this.state.leaseEndDate,
-                "SafetyDeposit": `${this.state.leaseSafetyDeposit}`
+                "LeaseNumber": pack.LeaseNumber,
+                "StartDate": pack.StartDate,
+                "EndDate": pack.EndDate,
+                "SafetyDeposit": `${pack.SafetyDeposit}`
             }
         }).then(response => {
             console.log(response.data);
             this.setState({
                 lease: response.data,
                 tenantLeaseId: response.data.id,
+                leaseModal: false,
+                tenantInfoModal: true,
             })
         });
     }
 
+    showLeaseModal = () => {
+        this.setState({ leaseModal: true });
+    }
+
+    hideLeaseModal = () => {
+        this.setState({ leaseModal: false });
+    }
+
     //PROPERTY POST
-    handleNewProperty = async(event) => {
-        event.preventDefault();
+    handleNewProperty = async(pack) => {
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/properties",
             data: {
-                "AddressId": parseInt(this.state.propertyAddressId),
-                "Bathrooms": this.state.propertyBathrooms,
-                "Bedrooms": this.state.propertyBedrooms,
-                "SquareFeet": this.state.propertySquareFeet
+                "AddressId": parseInt(pack.AddressId),
+                "Bathrooms": pack.Bathrooms,
+                "Bedrooms": pack.Bedrooms,
+                "SquareFeet": pack.SquareFeet
             }
         }).then(res => {
             console.log("Property Info",res.data)
             this.setState({
                 propertyInfo: res.data,
-                tenantPropertyId: res.data.id
+                tenantPropertyId: res.data.id,
+                tenantInfoModal: false
             })
         });
     }
 
+    showPropertyModal = () => {
+        this.setState({ propertyModal: true });
+    }
+
+    hidePropertyModal = () => {
+        this.setState({ propertyModal: false });
+    }
+
     //TenantInfo POST
 
-    handleNewTenant = async(event) => {
-        event.preventDefault();
+    handleNewTenant = async(pack) => {
         await axios({
             method: "POST",
             url: "https://localhost:44394/api/tenantsinfo",
             data: {
-                "TenantId": this.state.tenantId,
-                "RentDueDate": this.state.tenantRentDueDate,
-                "RentAmount": `${this.state.tenantRentAmount}`,
-                "LicenseNumber": this.state.tenantLicenseNumber,
-                "Age": parseInt(this.state.tenantAge),
-                "PropertyId": parseInt(this.state.tenantPropertyId),
-                "LeaseId": parseInt(this.state.tenantLeaseId)
+                "TenantId": pack.TenantId,
+                "RentDueDate": pack.RentDueDate,
+                "RentAmount": `${pack.RentAmount}`,
+                "LicenseNumber": pack.LicenseNumber,
+                "Age": parseInt(pack.Age),
+                "PropertyId": parseInt(pack.PropertyId),
+                "LeaseId": parseInt(pack.LeaseId)
             }
         }).then(res => {
             console.log(res.data);
@@ -169,6 +186,14 @@ class CreateTenant extends Component {
             alert("New Tenant account is functional")
             window.location = "/"
         });
+    }
+
+    showTenantModal = () => {
+        this.setState({ tenantInfoModal: true });
+    }
+
+    hideTenantModel = () => {
+        this.setState({ tenantInfoModal: false });
     }
 
 
@@ -201,111 +226,59 @@ class CreateTenant extends Component {
                             <Form.Control name="userEmail" value={this.state.userEmail} onChange={this.handleChange} ></Form.Control>
                             <Form.Label>Phone Number: </Form.Label>
                             <Form.Control name="userPhoneNumber" value={this.state.userPhoneNumber} onChange={this.handleChange} ></Form.Control>
-                            <Button type="submit" className='mt-3'>Register Tenant</Button>
+                            <Button type="submit" className='mt-3'>{this.state.button}</Button> {this.state.userError !== "" && (<p className='text-center'>{this.state.userError}</p>) }
                         </Form>
+                        <Button type='click' className='mt-2' onClick={this.showAddressModal} > Skip step </Button>
                     </Container>
                     <br/>
                 </div>
-                <div className="addressForm">
-                    <Container>
-                        <h5>New Address Item:</h5>
-                        <Form onSubmit={this.handleNewAddress}>
-                            <Form.Label>Building Number:</Form.Label>
-                            <Form.Control name="addressBuildingNumber"value={this.state.addressBuildingNumber} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>Street:</Form.Label>
-                            <Form.Control name="addressStreet"value={this.state.addressStreet} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>City:</Form.Label>
-                            <Form.Control name="addressCity"value={this.state.addressCity} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>State:</Form.Label>
-                            <Form.Control name="addressState"value={this.state.addressState} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>Zip Code:</Form.Label>
-                            <Form.Control name="addressZipCode"value={this.state.addressZipCode} onChange={this.handleChange}></Form.Control>
-                            <Button type="submit" className='mt-3'>Submit Address</Button>
-                        </Form>
-                    </Container>
+                    <Modal show={this.state.addressModal} onHide={this.hideAddressModal} >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Address Info</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <AddressForm handleNewAddress={this.handleNewAddress} />
+                        </Modal.Body>
+                    </Modal>
                     <br/>
-                </div>
                 <div className="leaseForm">
-                    <Container>
-                        <h5>New Lease:</h5>
-                        <Form onSubmit={this.handleNewLease}>
-                            <Form.Label>Lease Number:</Form.Label>
-                            <Form.Control name="leaseLeaseNumber" value={this.state.leaseLeaseNumber} onChange={this.handleChange} ></Form.Control>
-                            <Form.Label>Start Date:</Form.Label>
-                            <Form.Control name="leaseStartDate" value={this.state.leaseStartDate} onChange={this.handleChange} ></Form.Control>
-                            <Form.Label>End Date:</Form.Label>
-                            <Form.Control name="leaseEndDate" value={this.state.leaseEndDate} onChange={this.handleChange} ></Form.Control>
-                            <Form.Label>Safety Deposit:</Form.Label>
-                            <Form.Control name="leaseSafetyDeposit" value={this.state.leaseSafetyDeposit} onChange={this.handleChange} ></Form.Control>
-                            <Button type="submit" className='mt-3'>Submit Lease</Button>
-                        </Form>
-                    </Container>
+                <Modal show={this.state.leaseModal} onHide={this.hideLeaseModal} >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Lease Info</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <LeaseForm handleNewLease={this.handleNewLease} />
+                        </Modal.Body>
+                    </Modal>
                     <br/>
                 </div>
                 <div className="propertyForm">
-                    <Container>
-                    <h5>New Property:</h5>
-                        <Form onSubmit={this.handleNewProperty}>
-                            <Form.Label>Address Item Id:  </Form.Label>
-                            {!this.state.address && (
-                                <p>No previous Address Item Created</p>
-                            )
-                            }
-                            {this.state.address && (
-                                <p>Previously Created Address Item Id: {this.state.address.id}</p>
-                            )
-                            }
-                            <Form.Control name="propertyAddressId" value={this.state.propertyAddressId} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>Bathrooms: </Form.Label>
-                            <Form.Control name="propertyBathrooms" value={this.state.propertyBathrooms} onChange={this.handleChange} ></Form.Control>
-                            <Form.Label>Bedrooms: </Form.Label>
-                            <Form.Control name="propertyBedrooms" value={this.state.propertyBedrooms} onChange={this.handleChange} ></Form.Control>
-                            <Form.Label>Square Feet:</Form.Label>
-                            <Form.Control name="propertySquareFeet" value={this.state.propertySquareFeet} onChange={this.handleChange} ></Form.Control>
-                            <Button type="submit" className='mt-3'>Submit Property</Button>
-                        </Form>
-                    </Container>
+                <Modal show={this.state.propertyModal} onHide={this.hidePropertyModal} >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Property Info</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p className="text-center" >The created Address Id is: {this.state.address.id}</p>
+                            <PropertyForm handleNewProperty= {this.handleNewProperty}  />
+                        </Modal.Body>
+                    </Modal>
+                    
                     <br/>
                 </div>
                 <div className="tenantForm">
-                    <Container>
-                    <h5>New Tenant Form:</h5>
-                        <Form onSubmit={this.handleNewTenant}>
-                            <Form.Label>Tenant Id: </Form.Label>
-                               <p>Previously Created Address Item Id: {this.state.user.id}</p>
-                            <Form.Control name="tenantId" value={this.state.tenantId} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>Rent Due Date:</Form.Label>
-                            <p>Ex: "First of the Month"</p>
-                            <Form.Control name="tenantRentDueDate" value={this.state.tenantRentDueDate} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>Rent Amount:</Form.Label>
-                            <Form.Control name="tenantRentAmount" value={this.state.tenantRentAmount} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>Tenant License Number:</Form.Label>
-                            <Form.Control name="tenantLicenseNumber" value={this.state.tenantLicenseNumber} onChange={this.handleChange}></Form.Control>
-                            <Form.Label>Primary Tenant Age:</Form.Label>
-                            <Form.Control name="tenantAge" value={this.state.tenantAge} onChange={this.handleChange} ></Form.Control>
-                            <Form.Label>Tenant Property Id: </Form.Label>
-                            {!this.state.propertyInfo && (
-                                <p>No previous Property Created</p>
-                            )
-                            }
-                            {this.state.propertyInfo && (
-                                <p>Previously Property Id: {this.state.propertyInfo.id}</p>
-                            )
-                            }
-                            <Form.Control name="tenantPropertyId" value={this.state.tenantPropertyId} onChange={this.handleChange} ></Form.Control>
-                            <Form.Label>Tenant Lease Id:</Form.Label>
-                            {!this.state.lease && (
-                                <p>No previous Lease Created</p>
-                            )
-                            }
-                            {this.state.lease && (
-                                <p>Previously Created Lease Id: {this.state.lease.Id}</p>
-                            )
-                            }
-                            <Form.Control name="tenantLeaseId" value={this.state.tenantLeaseId} onChange={this.handleChange} ></Form.Control>
-                            <Button type="submit" className='mt-3'>Submit Tenant</Button>
-                        </Form>
-                    </Container>
+                <Modal show={this.state.tenantInfoModal} onHide={this.hideTenantModel} >
+                        <Modal.Header closeButton>
+                            <Modal.Title>Address Info</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <p className="text-center" >The User Id is: {this.state.user.id}</p>
+                            <p className="text-center" >The Property Id is: {this.state.propertyInfoId}</p>
+                            <p className="text-center" >The Lease Id is: {this.state.lease.id}</p>
+                            <TenantForm handleNewTenant={this.handleNewTenant} />
+                        </Modal.Body>
+                    </Modal>
+                    
+
                     <br/>
                 </div>
             </div>
