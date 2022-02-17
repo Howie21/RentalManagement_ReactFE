@@ -24,13 +24,12 @@ class T_PaymentHistory extends Component {
                 </div>
                 <br/>
                 <Container>
-                    <Table>
+                    <Table variant='light'>
                         <thead>
                             <tr className="text-center">
                                 <th>Tenant</th>
                                 <th>Amount</th>
                                 <th>Date</th>
-                                <th>Property Id</th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -38,9 +37,8 @@ class T_PaymentHistory extends Component {
                                 return(
                                     <tr className="text-center">
                                         <td>{pm.user.firstName} {pm.user.lastName}</td>
-                                        <td>{pm.paymentAmount}</td>
+                                        <td>${pm.paymentAmount}</td>
                                         <td>{pm.dateAndTime}</td>
-                                        <td>{pm.propertyId}</td>
                                     </tr>
                                 )
                             })}

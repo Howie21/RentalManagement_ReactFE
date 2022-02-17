@@ -1,7 +1,6 @@
 .historyTable {
     margin-top: 8px;
     
-    background-color: lightslategray;
     margin-left: 10px;
     margin-right: 15px;
 }
@@ -17,5 +16,4 @@
 }
 
 .workOrderPage {
-    background-color: lightslategray;
 }
