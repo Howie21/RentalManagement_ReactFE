@@ -65,6 +65,12 @@ class CreateTenant extends Component {
             this.setState({
                 user: res.data,
                 tenantId: res.data.id,
+                userFirstName: "",
+                userLastName: "",
+                userUserName: "",
+                userPassword: "",
+                userEmail: "",
+                userPhoneNumber: "",
                 button: "Successful",
                 addressModal: true,
             })
@@ -121,7 +127,7 @@ class CreateTenant extends Component {
                 lease: response.data,
                 tenantLeaseId: response.data.id,
                 leaseModal: false,
-                tenantInfoModal: true,
+                propertyModal: true,
             })
         });
     }
@@ -150,7 +156,8 @@ class CreateTenant extends Component {
             this.setState({
                 propertyInfo: res.data,
                 tenantPropertyId: res.data.id,
-                tenantInfoModal: false
+                propertyModal: false,
+                tenantInfoModal: true
             })
         });
     }
@@ -181,7 +188,8 @@ class CreateTenant extends Component {
         }).then(res => {
             console.log(res.data);
             this.setState({
-                tenantInfo: res.data
+                tenantInfo: res.data,
+                tenantInfoModal: false
             })
             alert("New Tenant account is functional")
             window.location = "/"
@@ -268,11 +276,11 @@ class CreateTenant extends Component {
                 <div className="tenantForm">
                 <Modal show={this.state.tenantInfoModal} onHide={this.hideTenantModel} >
                         <Modal.Header closeButton>
-                            <Modal.Title>Address Info</Modal.Title>
+                            <Modal.Title>Tenant Registery</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <p className="text-center" >The User Id is: {this.state.user.id}</p>
-                            <p className="text-center" >The Property Id is: {this.state.propertyInfoId}</p>
+                            <p className="text-center" >The Property Id is: {this.state.propertyInfo.id}</p>
                             <p className="text-center" >The Lease Id is: {this.state.lease.id}</p>
                             <TenantForm handleNewTenant={this.handleNewTenant} />
                         </Modal.Body>
